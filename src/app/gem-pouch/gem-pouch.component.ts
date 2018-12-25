@@ -27,7 +27,8 @@ export class GemPouchComponent implements OnInit {
 
   gems: Gem[];
 
-  constructor(private statsService: StatsService) { }
+  constructor(private statsService: StatsService) {
+  }
 
   ngOnInit() {
     this.gems = this.statsService.getGemPouch();
@@ -37,3 +38,4 @@ export class GemPouchComponent implements OnInit {
   sellGem = (index: number) => this.statsService.sellGem(index);
 
 
+}

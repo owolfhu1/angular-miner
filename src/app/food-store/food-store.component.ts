@@ -5,22 +5,30 @@ import { Food } from "../models/food.model";
 @Component({
   selector: 'app-food-store',
   template: `    
-    <div>
+    <div class="window">
       <h1>Food Store</h1>
       <p *ngIf="banned">You are currently banned from the store.</p>
-      <ul>
-        <li *ngFor="let foodItem of store; let i = index">
-          {{ foodItem.type }}({{ foodItem.health }}): {{ foodItem.cost }}: coins
-          <p><button (click)="buy(i)">buy</button></p>
-        </li>
-      </ul>
+      <table>
+        
+        <tr>
+          <th>type</th>
+          <th>cost</th>
+          <th>health</th>
+          <th>buy</th>
+        </tr>
+        
+        <tr *ngFor="let foodItem of store; let i = index">
+          <td>{{ foodItem.type }}</td>
+          <td>{{ foodItem.cost }}</td>
+          <td>{{ foodItem.health }}</td>
+          <td><button (click)="buy(i)">buy</button></td>
+        </tr>
+        
+      </table>
     </div>
   `,
   styles: [`
-    div {
-      width: 200px;
-      border: blueviolet solid 3px;
-    }
+    
   `]
 })
 export class FoodStoreComponent implements OnInit {

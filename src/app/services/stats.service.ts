@@ -6,7 +6,7 @@ export class StatsService {
   private lifePoints: number = 10;
   private maxLifePoints: number = 10;
   private gemPouch: Gem[] = [];
-  private coins: number = 0;
+  private coins: number = 100;
   private status: string = 'try to mine some coins to start playing!';
 
   lifePointsUpdate: EventEmitter<number> = new EventEmitter<number>();

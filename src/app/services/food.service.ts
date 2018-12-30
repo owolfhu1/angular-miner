@@ -6,12 +6,17 @@ import { Food } from "../models/food.model";
 export class FoodService {
 
   private bannedFromStore: boolean = false;
-  private fridge: Food[] = [];
+  private fridge: Food[] = [
+    // new Food('bacon', 20, 20),
+    // new Food('tofu', 25, 25),
+    // new Food('cabbage', 8, 10),
+  ];
   private store: Food[] = [
-    new Food('bacon', 20, 20),
-    new Food('tofu', 25, 25),
-    new Food('cabbage', 8, 10),
-    new Food('chicken', 12, 12)
+    new Food('cabbage', 5, 3),
+    new Food('bread', 9, 7),
+    new Food('tuna', 12, 11),
+    new Food('beef', 15, 17),
+    new Food('tofu', 20, 25),
   ];
   upsetStomach: boolean = false;
 
@@ -54,7 +59,7 @@ export class FoodService {
       this.statsService.setStatus('You are currently too sick to eat.');
       return;
     }
-    let foodItem = this.fridge.splice(index)[0];
+    let foodItem = this.fridge.splice(index, 1)[0];
     if (foodItem.cooked) {
       this.statsService.changeLifePoints(foodItem.health);
       this.statsService.setStatus(`You eat the ${foodItem.type} and it heals ${foodItem.health} life points.`);

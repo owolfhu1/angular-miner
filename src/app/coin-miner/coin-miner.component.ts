@@ -4,22 +4,25 @@ import { Gem } from "../models/gem.model";
 
 @Component({
   selector: 'app-coin-miner',
-  template: `    
-    <button 
-      (click)="mine()"
-      [ngClass]="{
-          active: activated, 
-          notActive: !activated,
-          theButton: true
-      }">
-      <h3 *ngIf="activated">mine for coins</h3>
-      <h3 *ngIf="!activated">{{ deactivatedMessage }}</h3>
-      <p>{{ coins }}</p>
-    </button>
-    <p>
-      <button *ngIf="miningSpeed > 200" (click)="increaseSpeed()">increase mining speed: 10 coins</button>
-    </p>
-    <p>mining attempts: {{ clicks }}</p>
+  template: `
+    <div class="window">
+      <br/>
+      <button 
+        (click)="mine()"
+        [ngClass]="{
+            active: activated, 
+            notActive: !activated,
+            theButton: true
+        }">
+        <h3 *ngIf="activated">mine for coins</h3>
+        <h3 *ngIf="!activated">{{ deactivatedMessage }}</h3>
+        <p>{{ coins }}</p>
+      </button>
+      <p>
+        <button *ngIf="miningSpeed > 300" (click)="increaseSpeed()">increase mining speed: {{ increaseCost }} coins</button>
+      </p>
+      <p>mining attempts: {{ clicks }}</p>
+    </div>
   `,
   styles: [`
     .theButton {
@@ -27,6 +30,7 @@ import { Gem } from "../models/gem.model";
       height: 150px;
       border-radius: 75px;
       border: burlywood dashed 4px;
+      margin: auto;
     }
     .active {
       background: yellow;
@@ -43,6 +47,7 @@ export class CoinMinerComponent implements OnInit {
   deactivatedMessage: string = 'mining...';
   clicks: number = 0;
   miningSpeed = 1500;
+  increaseCost = 10;
 
   private damageOutputs: {type: string, amount: number}[] = [
     {type: 'twisted leg', amount: 2},
@@ -64,12 +69,13 @@ export class CoinMinerComponent implements OnInit {
   }
 
   increaseSpeed = () => {
-    if (this.statsService.getCoins() < 10) {
-      this.statsService.setStatus('You need 10 coins to increase your mining speed.');
+    if (this.statsService.getCoins() < this.increaseCost) {
+      this.statsService.setStatus(`You need ${this.increaseCost} coins to increase your mining speed.`);
     } else {
-      this.statsService.addCoin(-10);
+      this.statsService.addCoin(-1 * this.increaseCost);
       this.miningSpeed -= 200;
-      this.statsService.setStatus(`You have increased your mining speed, you can now mine in just ${this.miningSpeed} ms.`)
+      this.statsService.setStatus(`You have increased your mining speed, you can now mine in just ${this.miningSpeed} ms.`);
+      this.increaseCost += 10;
     }
   };
 
@@ -77,12 +83,10 @@ export class CoinMinerComponent implements OnInit {
     if(!this.activated)
       return;
 
-    this.clicks++;
-
     this.activated = false;
     setTimeout(() => {
       this.activated = true;
-
+      this.clicks++;
       let result = Math.random();
 
       if (result < .1) {

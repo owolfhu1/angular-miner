@@ -5,24 +5,21 @@ import { Food } from "../models/food.model";
 @Component({
   selector: 'app-fridge',
   template: `
-    <div>
+    <div class="window">
       <h1>Fridge</h1>
       <p *ngIf="fridge.length === 0">You currently don't have any food, head over to the food store to buy some</p>
-      <ul>
-        <li *ngFor="let foodItem of fridge; let i = index">
-          {{foodItem.type === 'burnt food' ? '' : foodItem.cooked ? 'Cooked' : 'Raw' }} {{ foodItem.type }}
-          <button (click)="foodService.cook(i)">cook</button>
-          <button (click)="foodService.eat(i)">eat</button>
-          <button (click)="foodService.sell(i)">sell</button>
-        </li>
-      </ul>
+      <table>
+        <tr *ngFor="let foodItem of fridge; let i = index">
+          <td>{{foodItem.type === 'burnt food' ? '' : foodItem.cooked ? 'Cooked' : 'Raw' }} {{ foodItem.type }}</td>
+          <td><button (click)="foodService.cook(i)">cook</button></td>
+          <td><button (click)="foodService.eat(i)">eat({{ foodItem.health }})</button></td>
+          <td><button (click)="foodService.sell(i)">sell</button></td>
+        </tr>
+      </table>
     </div>
   `,
   styles: [`
-    div {
-      width: 200px;
-      border: blueviolet solid 3px;
-    }
+   
   `]
 })
 export class FridgeComponent implements OnInit {

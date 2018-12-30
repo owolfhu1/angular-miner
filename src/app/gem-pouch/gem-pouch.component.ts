@@ -5,9 +5,9 @@ import { Gem } from "../models/gem.model";
 @Component({
   selector: 'app-gem-pouch',
   template: `
-    <div>
+    <div class="window">
       <h1>Gem Pouch</h1>
-      <p *ngIf="gems.length === 0">You gem pouch is currently empty, try mining for coins and you may find some.</p>
+      <p *ngIf="gems.length === 0">Your gem pouch is currently empty, try mining for coins and you may find some.</p>
       <ul>
         <li *ngFor="let gem of gems; let i = index">
           {{ gem.type }} <button (click)="sellGem(i)">sell({{ gem.price }})</button>
@@ -15,12 +15,7 @@ import { Gem } from "../models/gem.model";
       </ul>
     </div>
   `,
-  styles: [`
-    div {
-      width: 200px;
-      border: blueviolet solid 3px;
-      overflow-y: scroll;
-    }
+  styles: [`    
   `]
 })
 export class GemPouchComponent implements OnInit {

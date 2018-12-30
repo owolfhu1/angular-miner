@@ -9,6 +9,7 @@ import { GemPouchComponent } from './gem-pouch/gem-pouch.component';
 import { FoodStoreComponent } from './food-store/food-store.component';
 import { FoodService } from "./services/food.service";
 import { FridgeComponent } from './fridge/fridge.component';
+import { StatusComponent } from './status/status.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FridgeComponent } from './fridge/fridge.component';
     StatsComponent,
     GemPouchComponent,
     FoodStoreComponent,
-    FridgeComponent
+    FridgeComponent,
+    StatusComponent
   ],
   imports: [
     BrowserModule

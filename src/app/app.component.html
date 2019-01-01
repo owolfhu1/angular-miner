@@ -1,28 +1,14 @@
-<table>
-  <tr>
-    <td>
-      <app-stats></app-stats>
-    </td>
-    <td>
-      <app-coin-miner></app-coin-miner>
-    </td>
-    <td>
-      <app-status></app-status>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <app-fridge></app-fridge>
-    </td>
-    <td>
-      <app-food-store></app-food-store>
-    </td>
-    <td>
-      <app-gem-pouch></app-gem-pouch>
-    </td>
-  </tr>
-</table>
 
+
+<div id="main">
+  <app-stats class="component"></app-stats>
+  <app-status class="component"></app-status>
+  <app-coin-miner class="component"></app-coin-miner>
+  <app-fridge *ngIf="fridgeUnlocked" class="component"></app-fridge>
+  <app-food-store *ngIf="foodStoreUnlocked" class="component"></app-food-store>
+  <app-gem-pouch *ngIf="gemPouchUnlocked" class="component"></app-gem-pouch>
+  <app-hunting-grounds *ngIf="huntingGroundsUnlocked" class="component"></app-hunting-grounds>
+</div>
 
 
 

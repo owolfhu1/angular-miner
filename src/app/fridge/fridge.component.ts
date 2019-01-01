@@ -30,7 +30,7 @@ export class FridgeComponent implements OnInit {
 
   ngOnInit() {
     this.fridge = this.foodService.getFridge();
-    this.foodService.updateFridge.subscribe(fridge => this.fridge = fridge);
+    this.foodService.fridgeUpdate.subscribe(fridge => this.fridge = fridge);
   }
 
 }

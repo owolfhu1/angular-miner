@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {StatsService} from "../services/stats.service";
 
 @Component({
   selector: 'app-status',
   template: `
-    <div class="window">
+    <div class="window" #scroll>
       <p><b></b></p>
-      <p *ngFor="let message of messages; let i = index">
-        <b *ngIf="i === 0">{{ message }}</b>
-        <span *ngIf="i > 0">{{ message }}</span>
-      </p>
+      <span *ngFor="let message of messages; let i = index">
+        <app-status-message [message]="message" [last]="i === messages.length - 1"></app-status-message>
+      </span>
     </div>
   `,
   styles: [`.window{text-align: left;}`]
 })
 export class StatusComponent implements OnInit {
 
+  @ViewChild('scroll') scrollDiv: ElementRef;
   messages: string[] = [];
 
   constructor(private statsService:StatsService) { }
@@ -23,8 +23,14 @@ export class StatusComponent implements OnInit {
   ngOnInit() {
     this.messages.push(this.statsService.getStatus());
     this.statsService.statusUpdate.subscribe(message => {
-      this.messages = [message, ...this.messages];
+      //this.messages = [message, ...this.messages].reverse();
+      this.messages.push(message);
+      //this.messages = this.messages.reverse();
     });
+  }
+
+  ngAfterViewChecked() {
+    this.scrollDiv.nativeElement.scrollTop = this.scrollDiv.nativeElement.scrollHeight;
   }
 
 }

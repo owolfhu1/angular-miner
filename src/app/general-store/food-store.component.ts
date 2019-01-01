@@ -4,10 +4,10 @@ import { Food } from "../models/food.model";
 import {StatsService} from "../services/stats.service";
 
 @Component({
-  selector: 'app-food-store',
+  selector: 'app-general-store',
   template: `    
     <div class="window">
-      <h1>Food Store</h1>
+      <h1>General Store</h1>
       <p *ngIf="banned">You are currently banned from the store.</p>
       <table>
         

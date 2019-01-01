@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StatsService } from "../services/stats.service";
 import { Gem } from "../models/gem.model";
+import {Damage} from "../models/damage.model";
 
 @Component({
   selector: 'app-coin-miner',
@@ -49,12 +50,14 @@ export class CoinMinerComponent implements OnInit {
   miningSpeed = 1500;
   increaseCost = 10;
 
-  private damageOutputs: {type: string, amount: number}[] = [
-    {type: 'twisted leg', amount: 2},
-    {type: 'broken arm', amount: 3},
-    {type: 'headache', amount: 1},
-    {type: 'headache', amount: 1},
-    {type: 'headache', amount: 1},
+  private damageOutputs: Damage[] = [
+    new Damage('coin mining', 'twist your leg', 3),
+    new Damage('coin mining', 'stub your toe', 2),
+    new Damage('coin mining', 'stub your toe', 2),
+    new Damage('coin mining', 'get a headache', 1),
+    new Damage('coin mining', 'get a headache', 1),
+    new Damage('coin mining', 'get a headache', 1),
+    new Damage('coin mining', 'get a headache', 1)
   ];
 
   constructor(private statsService: StatsService) { }
@@ -92,25 +95,24 @@ export class CoinMinerComponent implements OnInit {
       if (result < .1) {
         result = Math.random();
         if (result < .05) {
-          this.statsService.addGem(new Gem('dragonscale', 20));
-          this.statsService.setStatus('You found a dragonscale while mining for coins.');
+          this.statsService.setStatus(`You found a dragonscale while mining for coins.`);
+          this.statsService.addGem(new Gem('dragonscale', 20, false));
           return;
         }
         result = Math.random();
         if (result < .15) {
-          this.statsService.addGem(new Gem('diamond', 15));
-          this.statsService.setStatus('You found a diamond while mining for coins.');
+          this.statsService.setStatus(`You found a diamond while mining for coins.`);
+          this.statsService.addGem(new Gem('diamond', 15, false));
           return;
         }
         result = Math.random();
         if (result < .3) {
-          this.statsService.addGem(new Gem('sapphire', 10));
-          this.statsService.setStatus('You found a sapphire while mining for coins.');
+          this.statsService.setStatus(`You found a sapphire while mining for coins.`);
+          this.statsService.addGem(new Gem('sapphire', 10, false));
           return;
         }
-        this.statsService.addGem(new Gem('opal', 4));
-        this.statsService.setStatus('You found a opal while mining for coins.');
-
+        this.statsService.setStatus(`You found a opal while mining for coins.`);
+        this.statsService.addGem(new Gem('opal', 4, false));
         return;
       }
 
@@ -126,8 +128,8 @@ export class CoinMinerComponent implements OnInit {
 
       if (result < .2) {
         let damage = this.damageOutputs[Math.floor(Math.random() * this.damageOutputs.length)];
-        this.statsService.setStatus('You got hurt mining coins, reason: ' + damage.type);
-        this.statsService.changeLifePoints(damage.amount * -1);
+        //this.statsService.setStatus('You got hurt mining coins, reason: ' + damage.type);
+        this.statsService.damage(damage);
         return;
       }
 

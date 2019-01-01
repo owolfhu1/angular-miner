@@ -10,6 +10,9 @@ import { FoodStoreComponent } from './food-store/food-store.component';
 import { FoodService } from "./services/food.service";
 import { FridgeComponent } from './fridge/fridge.component';
 import { StatusComponent } from './status/status.component';
+import { StatusMessageComponent } from './status/status-message/status-message.component';
+import { GateKeepingService } from "./services/gateKeeping.service";
+import { HuntingGroundsComponent } from './hunting-grounds/hunting-grounds.component';
 
 @NgModule({
   declarations: [
@@ -19,14 +22,17 @@ import { StatusComponent } from './status/status.component';
     GemPouchComponent,
     FoodStoreComponent,
     FridgeComponent,
-    StatusComponent
+    StatusComponent,
+    StatusMessageComponent,
+    HuntingGroundsComponent
   ],
   imports: [
     BrowserModule
   ],
   providers: [
     StatsService,
-    FoodService
+    FoodService,
+    GateKeepingService
   ],
   bootstrap: [AppComponent]
 })

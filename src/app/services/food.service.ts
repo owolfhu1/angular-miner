@@ -1,6 +1,8 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { StatsService } from "./stats.service";
 import { Food } from "../models/food.model";
+import {Damage} from "../models/damage.model";
+import {GateKeepingService} from "./gateKeeping.service";
 
 @Injectable()
 export class FoodService {
@@ -32,10 +34,13 @@ export class FoodService {
     return this.store.slice();
   }
 
-  updateFridge: EventEmitter<Food[]> = new EventEmitter<Food[]>();
+  fridgeUpdate: EventEmitter<Food[]> = new EventEmitter<Food[]>();
   updateBannedFromStore: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private statsService: StatsService) {}
+  constructor(
+    private statsService: StatsService,
+    private gateKeepingService: GateKeepingService
+  ) {}
 
   cook(index: number) {
     let foodItem = this.fridge[index];
@@ -51,7 +56,7 @@ export class FoodService {
     } else
       this.statsService.setStatus(`You cook the ${foodItem.type}. You can now safely eat it.`);
     foodItem.cooked = true;
-    this.updateFridge.emit(this.fridge);
+    this.fridgeUpdate.emit(this.fridge);
   }
 
   eat(index: number) {
@@ -61,17 +66,17 @@ export class FoodService {
     }
     let foodItem = this.fridge.splice(index, 1)[0];
     if (foodItem.cooked) {
-      this.statsService.changeLifePoints(foodItem.health);
+      this.statsService.heal(foodItem.health);
       this.statsService.setStatus(`You eat the ${foodItem.type} and it heals ${foodItem.health} life points.`);
     } else {
-      this.statsService.changeLifePoints(-2);
+      this.statsService.damage(new Damage(`eating raw ${foodItem.type}`, 'come down with a severe case of diarrhea', 2));
       this.upsetStomach = true;
-      this.statsService.setStatus(`You eat the raw ${foodItem.type} and come down with a severe case of diarrhea.`);
+      //this.statsService.setStatus(`You eat the raw ${foodItem.type} and come down with a severe case of diarrhea.`);
       setTimeout(() => {
         this.upsetStomach = false;
       }, 30000);
     }
-    this.updateFridge.emit(this.fridge);
+    this.fridgeUpdate.emit(this.fridge);
   }
 
   buy(index: number) {
@@ -86,22 +91,26 @@ export class FoodService {
     if (this.statsService.getCoins() < foodItem.cost) {
       this.bannedFromStore = true;
       this.updateBannedFromStore.emit(this.bannedFromStore);
-      this.statsService.setStatus(
-        `You try to buy some ${foodItem.type} with
-         insufficient funds, the shop owner shoos 
-         you away with a broom doing 1 damage and
-         bans you temperately.`
-      );
-      this.statsService.changeLifePoints(-1);
+      // this.statsService.setStatus(
+      //   `You try to buy some ${foodItem.type} with
+      //    insufficient funds, the shop owner shoos
+      //    you away with a broom doing 1 damage and
+      //    bans you temperately.`
+      // );
+      this.statsService.damage(new Damage(`attempting to steal ${foodItem.type}`, 'are attacked by the shop owner with a broom', 1));
       setTimeout(() => {
         this.bannedFromStore = false;
         this.updateBannedFromStore.emit(this.bannedFromStore);
       }, 10000);
     } else {
-      this.fridge.push(foodItem);
-      this.updateFridge.emit(this.fridge);
-      this.statsService.addCoin(foodItem.cost * -1);
+      this.statsService.spendCoin(foodItem.cost);
       this.statsService.setStatus(`You buy a ${foodItem.type} for ${foodItem.cost} coins.`);
+      if(this.gateKeepingService.getFridgeUnlocked())
+        this.fridge.push(foodItem);
+      else
+        this.statsService.setStatus(`You didn't have anywhere to store your ${foodItem.type}, so you drop it and a fox runs off with it.`);
+      this.fridgeUpdate.emit(this.fridge);
+
     }
   }
 
@@ -110,7 +119,7 @@ export class FoodService {
     let value = itemToSell.cooked ? itemToSell.cost : Math.floor(itemToSell.cost / 2);
     this.statsService.addCoin(value);
     this.statsService.setStatus(`You sell your ${itemToSell.type} for ${value} coins.`);
-    this.updateFridge.emit(this.fridge);
+    this.fridgeUpdate.emit(this.fridge);
   }
 
 }

@@ -10,7 +10,7 @@ import { Gem } from "../models/gem.model";
       <p *ngIf="gems.length === 0">Your gem pouch is currently empty, try mining for coins and you may find some.</p>
       <ul>
         <li *ngFor="let gem of gems; let i = index">
-          {{ gem.type }} <button (click)="sellGem(i)">sell({{ gem.price }})</button>
+          {{gem.cut ? '' : 'uncut'}} {{ gem.type }} <button (click)="sellGem(i)">sell({{ gem.price }})</button>
         </li>
       </ul>
     </div>
@@ -31,6 +31,5 @@ export class GemPouchComponent implements OnInit {
   }
 
   sellGem = (index: number) => this.statsService.sellGem(index);
-
 
 }

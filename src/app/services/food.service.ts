@@ -105,7 +105,7 @@ export class FoodService {
     } else {
       this.statsService.spendCoin(foodItem.cost);
       this.statsService.setStatus(`You buy a ${foodItem.type} for ${foodItem.cost} coins.`);
-      if(this.gateKeepingService.getFridgeUnlocked())
+      if (this.gateKeepingService.getFridgeUnlocked())
         this.fridge.push(foodItem);
       else
         this.statsService.setStatus(`You didn't have anywhere to store your ${foodItem.type}, so you drop it and a fox runs off with it.`);

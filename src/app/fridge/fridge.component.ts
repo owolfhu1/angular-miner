@@ -14,7 +14,7 @@ import { Food } from "../models/food.model";
           <td>{{foodItem.type === 'burnt food' ? '' : foodItem.cooked ? 'Cooked' : 'Raw' }} {{ foodItem.type }}</td>
           <td><button (click)="foodService.cook(i)">cook</button></td>
           <td><button (click)="foodService.eat(i)">eat({{ foodItem.health }})</button></td>
-          <td><button (click)="foodService.sell(i)">sell</button></td>
+          <td><button (click)="foodService.sell(i)">sell({{ resale(foodItem.cost) }})</button></td>
         </tr>
       </table>
     </div>
@@ -29,6 +29,8 @@ export class FridgeComponent implements OnInit {
   sick: boolean;
 
   constructor(private foodService: FoodService) { }
+
+  resale = number => Math.floor(number / 2);
 
   ngOnInit() {
     this.fridge = this.foodService.getFridge();

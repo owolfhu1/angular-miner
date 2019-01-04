@@ -23,9 +23,9 @@ import { GateKeepingService } from "../services/gateKeeping.service";
 
       <h1>Upgrades</h1>
       <ul>
-        <li><button (click)="increaseLP()">++LP({{ increaseCost }} coins)</button></li>
-        <li *ngIf="fridgeUnlocked"><button>frige size + 1</button></li>
-        <li *ngIf="gemPouchUnlocked"><button>gem pouch size + 1</button></li>
+        <li><button (click)="increaseLP()">+1 life point({{ increaseCost }} coins)</button></li>
+        <!--<li *ngIf="fridgeUnlocked"><button>frige size + 1</button></li>-->
+        <!--<li *ngIf="gemPouchUnlocked"><button>gem pouch size + 1</button></li>-->
       </ul>
 
     </div>

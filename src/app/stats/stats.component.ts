@@ -8,21 +8,26 @@ import { GateKeepingService } from "../services/gateKeeping.service";
   template: `
     <div class="window">
       <h1>Stats</h1>
-      <p>
-        Life points: {{ lifePoints }}/{{ maxLifePoints }}
-        <button (click)="increaseLP()">++LP({{ increaseCost }} coins)</button>
-      </p>
+      <p>Life points: {{ lifePoints }}/{{ maxLifePoints }}</p>
       <p>Energy: {{ energy }}/{{ maxEnergy }}</p>
       <p>Gems in Gem Pouch: {{ gems }}</p>
       <p>Items in fridge: {{ fridge }}</p>
       <p>Coins: {{ coins }}</p>
-      <h1 *ngIf="!fridgeUnlocked || !foodStoreUnlocked || !gemPouchUnlocked">Unlockables</h1>
+      <h1 *ngIf="!fridgeUnlocked || !foodStoreUnlocked || !gemPouchUnlocked || !huntingGroundUnlocked">Unlockables</h1>
       <ul>
         <li *ngIf="!fridgeUnlocked"><button (click)="unlockFridge()">unlock fridge ({{ fridgeUnlockCost }})</button></li>
         <li *ngIf="!foodStoreUnlocked"><button (click)="unlockFoodStore()">unlock food store ({{ foodStoreUnlockCost }})</button></li>
         <li *ngIf="!gemPouchUnlocked"><button (click)="unlockGemPouch()">unlock gem pouch ({{ gemPouchUnlockCost }})</button></li>
         <li *ngIf="!huntingGroundUnlocked"><button (click)="unlockHuntingGround()">unlock hunting grounds ({{ huntingGroundUnlockCost }})</button></li>
       </ul>
+
+      <h1>Upgrades</h1>
+      <ul>
+        <li><button (click)="increaseLP()">++LP({{ increaseCost }} coins)</button></li>
+        <li *ngIf="fridgeUnlocked"><button>frige size + 1</button></li>
+        <li *ngIf="gemPouchUnlocked"><button>gem pouch size + 1</button></li>
+      </ul>
+
     </div>
   `,
   styles: [`
@@ -44,18 +49,17 @@ export class StatsComponent implements OnInit {
   fridgeUnlocked: boolean;
   fridgeUnlockCost: number = 10;
   gemPouchUnlocked: boolean;
-  gemPouchUnlockCost: number  = 15;
+  gemPouchUnlockCost: number  = 5;
   foodStoreUnlocked: boolean;
   foodStoreUnlockCost: number = 5;
   huntingGroundUnlocked: boolean;
-  huntingGroundUnlockCost: number = 30;
+  huntingGroundUnlockCost: number = 15;
 
   constructor(
     private statsService: StatsService,
     private foodService: FoodService,
     private gateKeepingService: GateKeepingService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.energy = this.statsService.getEnergy();

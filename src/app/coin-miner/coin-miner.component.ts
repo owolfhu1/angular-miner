@@ -119,8 +119,9 @@ export class CoinMinerComponent implements OnInit {
       result = Math.random();
 
       if (result < .35) {
-        this.statsService.addCoin(1);
-        this.statsService.setStatus('You mined a coin.');
+        const amount = Math.floor((Math.random() * 5) + 1);
+        this.statsService.addCoin(amount);
+        this.statsService.setStatus(`You mined ${amount === 1 ? 'a' : amount} coin${amount === 1 ? '' : 's'}.`);
         return;
       }
 
@@ -128,7 +129,6 @@ export class CoinMinerComponent implements OnInit {
 
       if (result < .2) {
         let damage = this.damageOutputs[Math.floor(Math.random() * this.damageOutputs.length)];
-        //this.statsService.setStatus('You got hurt mining coins, reason: ' + damage.type);
         this.statsService.damage(damage);
         return;
       }

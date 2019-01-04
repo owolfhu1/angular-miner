@@ -7,7 +7,7 @@ import {StatsService} from "../services/stats.service";
     <div class="window" #scroll>
       <p><b></b></p>
       <span *ngFor="let message of messages; let i = index">
-        <app-status-message [message]="message" [last]="i === messages.length - 1"></app-status-message>
+        <app-status-message [message]="message" ></app-status-message>
       </span>
     </div>
   `,

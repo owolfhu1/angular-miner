@@ -7,6 +7,7 @@ import { Food } from "../models/food.model";
   template: `
     <div class="window">
       <h1>Fridge</h1>
+      <p *ngIf="sick">You are currently too sick to eat.</p>
       <p *ngIf="fridge.length === 0">You currently don't have any food, head over to the food store to buy some</p>
       <table>
         <tr *ngFor="let foodItem of fridge; let i = index">
@@ -25,12 +26,15 @@ import { Food } from "../models/food.model";
 export class FridgeComponent implements OnInit {
 
   fridge: Food[];
+  sick: boolean;
 
   constructor(private foodService: FoodService) { }
 
   ngOnInit() {
     this.fridge = this.foodService.getFridge();
+    this.sick = this.foodService.getUpsetStomach();
     this.foodService.fridgeUpdate.subscribe(fridge => this.fridge = fridge);
+    this.foodService.upsetStomachUpdate.subscribe(sick => this.sick = sick);
   }
 
 }

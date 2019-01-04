@@ -6,7 +6,6 @@ import {GateKeepingService} from "./gateKeeping.service";
 
 @Injectable()
 export class FoodService {
-
   private bannedFromStore: boolean = false;
   private fridge: Food[] = [
     // new Food('bacon', 20, 20),
@@ -21,6 +20,10 @@ export class FoodService {
     new Food('tofu', 20, 25),
   ];
   upsetStomach: boolean = false;
+
+  getUpsetStomach = () => this.upsetStomach;
+
+  upsetStomachUpdate: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   getBannedFromStore() {
     return this.bannedFromStore;
@@ -71,9 +74,10 @@ export class FoodService {
     } else {
       this.statsService.damage(new Damage(`eating raw ${foodItem.type}`, 'come down with a severe case of diarrhea', 2));
       this.upsetStomach = true;
-      //this.statsService.setStatus(`You eat the raw ${foodItem.type} and come down with a severe case of diarrhea.`);
+      this.upsetStomachUpdate.emit(this.upsetStomach);
       setTimeout(() => {
         this.upsetStomach = false;
+        this.upsetStomachUpdate.emit(this.upsetStomach);
       }, 30000);
     }
     this.fridgeUpdate.emit(this.fridge);
@@ -105,13 +109,17 @@ export class FoodService {
     } else {
       this.statsService.spendCoin(foodItem.cost);
       this.statsService.setStatus(`You buy a ${foodItem.type} for ${foodItem.cost} coins.`);
-      if (this.gateKeepingService.getFridgeUnlocked())
-        this.fridge.push(foodItem);
-      else
-        this.statsService.setStatus(`You didn't have anywhere to store your ${foodItem.type}, so you drop it and a fox runs off with it.`);
-      this.fridgeUpdate.emit(this.fridge);
+      this.addFood(foodItem);
 
     }
+  }
+
+  addFood = (food: Food) => {
+    if (this.gateKeepingService.getFridgeUnlocked())
+      this.fridge.push(food);
+    else
+      this.statsService.setStatus(`You didn't have anywhere to store your ${food.type}, so you drop it and a fox runs off with it.`);
+    this.fridgeUpdate.emit(this.fridge);
   }
 
   sell(index: number) {

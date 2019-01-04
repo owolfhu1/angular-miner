@@ -1,7 +1,6 @@
-import {EventEmitter, Injectable} from "@angular/core";
-import { StatsService } from "./stats.service";
+import { EventEmitter } from '@angular/core';
 
-//@Injectable()
+
 export class GateKeepingService {
 
   private gemPouchUnlocked: boolean = false;

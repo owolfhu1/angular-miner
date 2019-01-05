@@ -17,8 +17,16 @@ import {Damage} from "../models/damage.model";
         }">
         <h3 *ngIf="activated">mine for coins</h3>
         <h3 *ngIf="!activated">{{ deactivatedMessage }}</h3>
-        <p>{{ coins }}</p>
+        <p>You have {{ coins }} coins</p>
       </button>
+      <p>
+        <button *ngIf="!autoMinerUnlocked" (click)="unlockAutoMiner()">
+          unlock auto miner({{ autoMinerCost }})
+        </button>
+        <button *ngIf="autoMinerUnlocked" (click)="autoMine()">
+          {{ autoMiner ? 'Stop Mining' : 'Start Mining'}}
+        </button>
+      </p>
       <p>
         <button *ngIf="miningSpeed > 300" (click)="increaseSpeed()">increase mining speed: {{ increaseCost }} coins</button>
       </p>
@@ -49,6 +57,9 @@ export class CoinMinerComponent implements OnInit {
   clicks: number = 0;
   miningSpeed = 1500;
   increaseCost = 10;
+  autoMinerUnlocked: boolean = false;
+  autoMiner: boolean = false;
+  autoMinerCost: number = 50;
 
   private damageOutputs: Damage[] = [
     new Damage('coin mining', 'twist your leg', 3),
@@ -82,6 +93,22 @@ export class CoinMinerComponent implements OnInit {
     }
   };
 
+  autoMine = () => {
+    this.autoMiner = ! this.autoMiner;
+    if (this.autoMiner && this.activated)
+      this.mine();
+  }
+
+  unlockAutoMiner = () => {
+    if (this.coins < this.autoMinerCost)
+      this.statsService.setStatus(`You need ${this.autoMinerCost} coins to unlock the AutoMiner500™.`);
+    else {
+      this.autoMinerUnlocked = true;
+      this.statsService.spendCoin(this.autoMinerCost);
+      this.statsService.setStatus(`You have unlocked the AutoMiner500™ for ${this.autoMinerCost} coins!`);
+    }
+  }
+
   mine = () => {
     if(!this.activated)
       return;
@@ -89,6 +116,10 @@ export class CoinMinerComponent implements OnInit {
     this.activated = false;
     setTimeout(() => {
       this.activated = true;
+
+      if (this.autoMiner)
+        setTimeout(() => this.mine(), 100);
+
       this.clicks++;
       let result = Math.random();
 
@@ -135,7 +166,11 @@ export class CoinMinerComponent implements OnInit {
 
       this.statsService.setStatus('You tried to mine for coins but nothing happened');
 
-    }, this.miningSpeed);
 
+
+
+
+    }, this.miningSpeed);
   }
 }
+

@@ -144,7 +144,7 @@ export class HuntingGroundsComponent implements OnInit {
       if (Math.random() < .01 * weapon.power) {
         // sucessful hunt
         let animal = JSON.parse(JSON.stringify(this.animals))[Math.floor(Math.random() * this.animals.length)];
-        // let animal = this.animals.slice()[Math.floor(Math.random() * this.animals.length)];
+       // let animal: Food = this.animals.slice()[Math.floor(Math.random() * this.animals.length)];
         this.statsService.setStatus(`You successfuly hunt a ${animal.type}!!`);
         this.foodService.addFood(animal);
         return;

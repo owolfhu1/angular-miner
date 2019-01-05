@@ -7,13 +7,13 @@ import { GateKeepingService } from "../services/gateKeeping.service";
   selector: 'app-stats',
   template: `
     <div class="window">
-      <h1>Stats</h1>
-      <p>Life points: {{ lifePoints }}/{{ maxLifePoints }}</p>
-      <p>Energy: {{ energy }}/{{ maxEnergy }}</p>
-      <p>Gems in Gem Pouch: {{ gems }}</p>
-      <p>Items in fridge: {{ fridge }}</p>
-      <p>Coins: {{ coins }}</p>
-      <h1 *ngIf="!fridgeUnlocked || !foodStoreUnlocked || !gemPouchUnlocked || !huntingGroundUnlocked">Unlockables</h1>
+      <h2>Stats</h2>
+      Life points: {{ lifePoints }}/{{ maxLifePoints }}<br/>
+      Energy: {{ energy }}/{{ maxEnergy }}<br/>
+      Gems in Gem Pouch: {{ gems }}<br/>
+      Items in fridge: {{ fridge }}<br/>
+      Coins: {{ coins }}<br/>
+      <h2 *ngIf="!fridgeUnlocked || !foodStoreUnlocked || !gemPouchUnlocked || !huntingGroundUnlocked">Unlockables</h2>
       <ul>
         <li *ngIf="!fridgeUnlocked"><button (click)="unlockFridge()">unlock fridge ({{ fridgeUnlockCost }})</button></li>
         <li *ngIf="!foodStoreUnlocked"><button (click)="unlockFoodStore()">unlock food store ({{ foodStoreUnlockCost }})</button></li>
@@ -21,7 +21,7 @@ import { GateKeepingService } from "../services/gateKeeping.service";
         <li *ngIf="!huntingGroundUnlocked"><button (click)="unlockHuntingGround()">unlock hunting grounds ({{ huntingGroundUnlockCost }})</button></li>
       </ul>
 
-      <h1>Upgrades</h1>
+      <h2>Upgrades</h2>
       <ul>
         <li><button (click)="increaseLP()">+1 life point({{ increaseCost }} coins)</button></li>
         <!--<li *ngIf="fridgeUnlocked"><button>frige size + 1</button></li>-->

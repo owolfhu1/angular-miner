@@ -21,7 +21,7 @@ import {Damage} from "../models/damage.model";
       </button>
       <p>
         <button *ngIf="!autoMinerUnlocked" (click)="unlockAutoMiner()">
-          unlock auto miner({{ autoMinerCost }})
+          unlock AutoMiner500™({{ autoMinerCost }})
         </button>
         <button *ngIf="autoMinerUnlocked" (click)="autoMine()">
           {{ autoMiner ? 'Stop Mining' : 'Start Mining'}}
@@ -62,13 +62,24 @@ export class CoinMinerComponent implements OnInit {
   autoMinerCost: number = 50;
 
   private damageOutputs: Damage[] = [
-    new Damage('coin mining', 'twist your leg', 3),
-    new Damage('coin mining', 'stub your toe', 2),
-    new Damage('coin mining', 'stub your toe', 2),
-    new Damage('coin mining', 'get a headache', 1),
-    new Damage('coin mining', 'get a headache', 1),
-    new Damage('coin mining', 'get a headache', 1),
-    new Damage('coin mining', 'get a headache', 1)
+    new Damage('coin mining', 'you twist your leg', 3),
+    new Damage('coin mining', 'you stub your toe', 2),
+    new Damage('coin mining', 'you stub your toe', 2),
+    new Damage('coin mining', 'you get a headache', 1),
+    new Damage('coin mining', 'you get a headache', 1),
+    new Damage('coin mining', 'you get a headache', 1),
+    new Damage('coin mining', 'you get a headache', 1)
+  ];
+
+  private autoMinerDamageOutputs: Damage[] = [
+    new Damage('auto coin mining', 'AutoMiner500™ kicks rocks in your face', 4),
+    new Damage('auto coin mining', 'you cough on the AutoMiner500™ smoke', 2),
+    new Damage('auto coin mining', 'AutoMiner500™ sends a spark flying in your direction', 1),
+    new Damage('auto coin mining', 'AutoMiner500™ sends a spark flying in your direction', 1),
+    new Damage('auto coin mining', 'AutoMiner500™ sends a spark flying in your direction', 1),
+    new Damage('auto coin mining', 'AutoMiner500™ sends a spark flying in your direction', 1),
+    new Damage('auto coin mining', 'AutoMiner500™ sends a spark flying in your direction', 1),
+    new Damage('auto coin mining', 'AutoMiner500™ sends a spark flying in your direction', 1)
   ];
 
   constructor(private statsService: StatsService) { }
@@ -159,7 +170,12 @@ export class CoinMinerComponent implements OnInit {
       result = Math.random();
 
       if (result < .2) {
-        let damage = this.damageOutputs[Math.floor(Math.random() * this.damageOutputs.length)];
+        let damage;
+        if(this.autoMiner){
+          damage = this.autoMinerDamageOutputs[Math.floor(Math.random() * this.autoMinerDamageOutputs.length)];
+        } else {
+          damage = this.damageOutputs[Math.floor(Math.random() * this.damageOutputs.length)];
+        }
         this.statsService.damage(damage);
         return;
       }

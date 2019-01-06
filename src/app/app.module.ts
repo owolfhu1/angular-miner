@@ -13,6 +13,7 @@ import { StatusComponent } from './status/status.component';
 import { StatusMessageComponent } from './status/status-message/status-message.component';
 import { GateKeepingService } from './services/gateKeeping.service';
 import { HuntingGroundsComponent } from './hunting-grounds/hunting-grounds.component';
+import { PlayerStoreComponent } from './player-store/player-store.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HuntingGroundsComponent } from './hunting-grounds/hunting-grounds.compo
     FridgeComponent,
     StatusComponent,
     StatusMessageComponent,
-    HuntingGroundsComponent
+    HuntingGroundsComponent,
+    PlayerStoreComponent
   ],
   imports: [
     BrowserModule

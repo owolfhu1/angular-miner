@@ -11,16 +11,18 @@ import { Gem } from "../models/gem.model";
       <ul>
         <li *ngFor="let gem of gems; let i = index">
           {{gem.cut ? '' : 'uncut'}} {{ gem.type }} <button (click)="sellGem(i)">sell({{ gem.price }})</button>
+          <button *ngIf="gemStockUnlocked" (click)="shipToStore()">ship to store</button>
         </li>
       </ul>
     </div>
   `,
-  styles: [`    
-  `]
+  styles: [``]
 })
 export class GemPouchComponent implements OnInit {
 
   gems: Gem[];
+
+  gemStockUnlocked: boolean;
 
   constructor(private statsService: StatsService) {
   }
@@ -28,8 +30,13 @@ export class GemPouchComponent implements OnInit {
   ngOnInit() {
     this.gems = this.statsService.getGemPouch();
     this.statsService.gemPouchUpdate.subscribe(gems => this.gems = gems);
+    this.gemStockUnlocked = this.statsService.getGemStockUnlocked();
+    this.statsService.gemStockUnlockedUpdate.subscribe(uncocked => this.gemStockUnlocked = uncocked);
   }
 
   sellGem = (index: number) => this.statsService.sellGem(index);
+
+  shipToStore = index => this.statsService.shipToStore(index);
+
 
 }

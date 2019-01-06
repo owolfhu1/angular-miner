@@ -8,11 +8,15 @@ import { GateKeepingService } from "../services/gateKeeping.service";
   template: `
     <div class="window">
       <h2>Stats</h2>
-      Life points: {{ lifePoints }}/{{ maxLifePoints }}<br/>
-      Energy: {{ energy }}/{{ maxEnergy }}<br/>
-      Gems in Gem Pouch: {{ gems }}<br/>
-      Items in fridge: {{ fridge }}<br/>
-      Coins: {{ coins }}<br/>
+      
+      <div class="stat_box">
+        <span>Life:<br> {{ lifePoints }}/{{ maxLifePoints }}</span>
+        <span>Energy:<br> {{ energy }}/{{ maxEnergy }}</span>
+        <span>Gems:<br> {{ gems }}</span>
+        <span>Food: <br>{{ fridge }}</span>
+        <span>Coins: <br>{{ coins }}</span>
+      </div>
+      
       <h2 *ngIf="!fridgeUnlocked || !foodStoreUnlocked || !gemPouchUnlocked || !huntingGroundUnlocked">Unlockables</h2>
       <ul>
         <li *ngIf="!fridgeUnlocked"><button (click)="unlockFridge()">unlock fridge ({{ fridgeUnlockCost }})</button></li>
@@ -33,6 +37,19 @@ import { GateKeepingService } from "../services/gateKeeping.service";
   styles: [`
     .window {
       text-align: left;
+    }
+    .stat_box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    span {
+      flex: 10 0 20%;
+      border: green solid 1px;
+      border-radius: 4px;
+      background: gray;
+      margin: 4px;
+      padding: 3px;
     }
   `]
 })

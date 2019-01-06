@@ -16,21 +16,30 @@ export class StatsService {
     }, 10000);
   }
 
-  /*
-    PROPERTIES
-   */
+
   private energy = 10;
   private maxEnergy = 10;
   private lifePoints = 10;
   private maxLifePoints = 10;
   private gemPouch: Gem[] = [];
   private gemPouchSize = 3;
-  private coins = 0;
+  private coins = 1000;
   private status = 'try to mine some coins to start playing!';
 
-  /*
-    EVENTS
-   */
+  gemStockUnlocked: boolean = false;
+  getGemStockUnlocked = () => this.gemStockUnlocked;
+  gemStockUnlockedUpdate: EventEmitter<boolean> = new EventEmitter<boolean>();
+  unlockGemStock = () => {
+    this.gemStockUnlocked = true;
+    this.gemStockUnlockedUpdate.emit(this.gemStockUnlocked);
+  }
+  emitGemToStock: EventEmitter<Gem> = new EventEmitter<Gem>();
+  shipToStore = index => {
+    let gem = this.gemPouch.splice(index, 1)[0];
+    this.gemPouchUpdate.emit(this.gemPouch);
+    this.setStatus(`You ship the ${gem.type} to your player store.`);
+    this.emitGemToStock.emit(gem);
+  }
 
   energyUpdate: EventEmitter<number> = new EventEmitter<number>();
   maxEnergyUpdate: EventEmitter<number> = new EventEmitter<number>();
@@ -41,9 +50,7 @@ export class StatsService {
   statusUpdate: EventEmitter<string> = new EventEmitter<string>();
   death: EventEmitter<void> = new EventEmitter<void>();
 
-  /*
-    GETTERS
-   */
+
   getEnergy = () => this.energy;
   getMaxEnergy = () => this.maxEnergy;
   getLifePoints = () => this.lifePoints;
@@ -53,9 +60,7 @@ export class StatsService {
   getCoins = () => this.coins;
   getStatus = () => this.status;
 
-  /*
-    METHODS
-   */
+
   increaseMaxLP() {
     this.maxLifePointsUpdate.emit(++this.maxLifePoints);
     this.lifePointsUpdate.emit(++this.lifePoints);
@@ -107,7 +112,7 @@ export class StatsService {
     this.statusUpdate.emit(newStatus);
   }
   damage = (damage: Damage) => {
-    this.setStatus(`While ${damage.type} you ${damage.reason} and take ${damage.amount} damage.`);
+    this.setStatus(`While ${damage.type} ${damage.reason} and you take ${damage.amount} damage.`);
     this.changeLifePoints(-1 * damage.amount);
   }
   heal = (amount: number) => this.changeLifePoints(amount);
@@ -115,4 +120,5 @@ export class StatsService {
     this.energy -= amount;
     this.energyUpdate.emit(this.energy);
   }
+
 }

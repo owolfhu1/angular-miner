@@ -23,9 +23,9 @@ export class StatusComponent implements OnInit {
   ngOnInit() {
     this.messages.push(this.statsService.getStatus());
     this.statsService.statusUpdate.subscribe(message => {
-      //this.messages = [message, ...this.messages].reverse();
+      if (this.messages.length > 100)
+        this.messages.splice(0, 1);
       this.messages.push(message);
-      //this.messages = this.messages.reverse();
     });
   }
 
